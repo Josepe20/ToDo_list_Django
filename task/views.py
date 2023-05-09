@@ -3,7 +3,8 @@ from .models import Task
 
 # Create your views here.
 def list_task(request):
-    return render(request, 'task/list_task.html')
+    tasks = Task.objects.all()
+    return render(request, 'task/list_task.html', {'tasks': tasks})
 
 def create_task(request):
     print(request.POST)
@@ -11,3 +12,7 @@ def create_task(request):
     task.save()
     return redirect('/tasks/')
 
+def delete_task(request, task_id):
+    task = Task.objects.get(id=task_id)
+    task.delete()
+    return redirect('/tasks/')

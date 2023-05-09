@@ -13,15 +13,42 @@
     <link rel="stylesheet" href="{% static 'main.css' %}">
 </head>
 <body>
-    <h1>Tasks</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+                <h1 class="display-3 text-center fw-bold">Tasks</h1>
 
-    <form action="/tasks/new/" method="POST">
-        {% csrf_token %}
+                <form action="{% url 'create_task' %}" method="POST" class="card card-body bg-secondary">
+                    {% csrf_token %}
 
-        <input type="text" name="title" placeholder="Write a title">
-        <textarea name="description" row="3"></textarea>
+                    <label for="title">Title:</label>
+                    <input type="text" name="title" placeholder="Write a title" class="form-control mb-2">
 
-        <button>Save</button>
-    </form>
+                    <label for="description">Description:</label>
+                    <textarea name="description" row="3" placeholder="Write a description" class="form-control mb-2"></textarea>
+
+                    <button class="btn btn-success">Save</button>
+                </form>
+
+                <div>
+                    {% for task in tasks %}
+                        <div class="card card-body text-black mt-2 d-flex flex-row justify-content-between">
+                            <div>
+                                <h4>{{ task.title }}</h4>
+                                <p>{{ task.description }}</p>
+                            </div>
+                            <form action="{% url 'delete_task' task.id %}" method="POST">
+                                {% csrf_token %}
+                                <button class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+
+                    {% empty %}
+                        <h2 class="display-5 text-center">No tasks yet</h2>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
