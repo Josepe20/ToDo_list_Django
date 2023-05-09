@@ -12,6 +12,16 @@ def create_task(request):
     task.save()
     return redirect('/tasks/')
 
+def update_task(request, task_id):
+    task = Task.objects.get(id=task_id)
+
+    if request.POST:
+        task.title = request.POST['title']
+        task.description = request.POST['description']
+        task.save()
+        return redirect('/tasks/')
+    return render(request, 'task/update_task.html', {'task': task})
+
 def delete_task(request, task_id):
     task = Task.objects.get(id=task_id)
     task.delete()

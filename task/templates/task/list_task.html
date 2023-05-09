@@ -22,10 +22,10 @@
                     {% csrf_token %}
 
                     <label for="title">Title:</label>
-                    <input type="text" name="title" placeholder="Write a title" class="form-control mb-2">
+                    <input type="text" name="title" placeholder="Write a title" class="form-control mb-2" required>
 
                     <label for="description">Description:</label>
-                    <textarea name="description" row="3" placeholder="Write a description" class="form-control mb-2"></textarea>
+                    <textarea name="description" row="3" placeholder="Write a description" class="form-control mb-2" required></textarea>
 
                     <button class="btn btn-success">Save</button>
                 </form>
@@ -37,10 +37,18 @@
                                 <h4>{{ task.title }}</h4>
                                 <p>{{ task.description }}</p>
                             </div>
-                            <form action="{% url 'delete_task' task.id %}" method="POST">
-                                {% csrf_token %}
-                                <button class="btn btn-danger btn-sm">Delete</button>
-                            </form>
+                            <div>
+                                <form action="{% url 'update_task' task.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button class="btn btn-primary mt-1">Update</button>
+                                </form>
+
+                                <form action="{% url 'delete_task' task.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button class="btn btn-danger mt-1">Delete</button>
+                                </form>
+                            </div>
+
                         </div>
 
                     {% empty %}
