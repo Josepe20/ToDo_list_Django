@@ -38,7 +38,7 @@
                                 <p>{{ task.description }}</p>
                             </div>
                             <div>
-                                <form action="{% url 'update_task' task.id %}" method="POST">
+                                <form action="{% url 'update_page' task.id %}" method="POST">
                                     {% csrf_token %}
                                     <button class="btn btn-primary mt-1">Update</button>
                                 </form>
