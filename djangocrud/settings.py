@@ -84,10 +84,12 @@ WSGI_APPLICATION = 'djangocrud.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# postgresql://postgres:WZMlZtkkxJeXnfgqbcDj@containers-us-west-195.railway.app:6939/railway
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tasksdb',
+        'NAME': 'railway',
         'USER': 'postgres',
         'PASSWORD': 'WZMlZtkkxJeXnfgqbcDj',
         'HOST': 'containers-us-west-195.railway.app',
