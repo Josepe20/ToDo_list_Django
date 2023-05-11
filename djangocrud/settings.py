@@ -89,9 +89,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'tasksdb',
         'USER': 'postgres',
-        'PASSWORD': '2282',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'PASSWORD': 'WZMlZtkkxJeXnfgqbcDj',
+        'HOST': 'containers-us-west-195.railway.app',
+        'PORT': '6939',
     }
 }
 
