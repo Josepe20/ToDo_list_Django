@@ -88,12 +88,9 @@ WSGI_APPLICATION = 'djangocrud.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'WZMlZtkkxJeXnfgqbcDj',
-        'HOST': 'containers-us-west-195.railway.app',
-        'PORT': '6939',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'tasks.db', # This is where you put the name of the db file.
+                 # If one doesn't exist, it will be created at migration time.
     }
 }
 

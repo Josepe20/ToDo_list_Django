@@ -1,5 +1,41 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, resolve_url
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.contrib.auth import login, logout
+from django.db import IntegrityError
+from django.http import HttpResponse
 from .models import Task
+
+# singup users
+def singup(request):
+
+    if request.method == 'POST':
+        if request.POST['password1'] == request.POST['password2']:
+            try:
+                user = User.objects.create_user(
+                    username=request.POST['username'],
+                    password=request.POST['password1'],
+                )
+                user.save()
+
+                login(request, user)
+                return redirect('/')
+
+            except IntegrityError:
+                return render(request, 'task/sing_up.html', {
+                    'form': UserCreationForm,
+                    'error': 'Username already exist',
+                })
+        else:
+            return render(request, 'task/sing_up.html', {
+                'form': UserCreationForm,
+                'error': 'Passwords do not match',
+            })
+
+    return render(request, 'task/sing_up.html', {
+        'form': UserCreationForm
+    })
+
 
 # Create your views here.
 def list_task(request):
