@@ -1,17 +1,16 @@
 {% extends 'task/base.html' %}
 
 {% block content %}
-    <h1>Sing Up</h1>
+    <h1>Log in</h1>
 
-    <span>{{ error }}</span>
 
-    <form action="{% url 'singup' %}" method="POST">
+    <form action="{% url 'login' %}" method="POST">
         {% csrf_token %}
 
         {{form.as_p}}
 
         <button>
-            Sing Up
+            Log in
         </button>
     </form>
 {% endblock %}

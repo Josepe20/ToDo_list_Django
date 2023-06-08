@@ -119,6 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
+# Guatemala 'UTC−06:00'
 TIME_ZONE = 'UTC'
 
 USE_I18N = True

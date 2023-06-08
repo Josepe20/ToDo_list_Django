@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, resolve_url
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from django.http import HttpResponse
 from .models import Task
+
 
 # singup users
 def singup(request):
@@ -37,10 +38,38 @@ def singup(request):
     })
 
 
+def singin(request):
+    if request.method == 'POST':
+
+        user = authenticate(
+                    request,
+                    username=request.POST['username'],
+                    password=request.POST['password'])
+
+        if user is None:
+            return render(request, 'task/sing_in.html', {
+                'form': AuthenticationForm,
+                'error': "User Name or Password is incorrect"
+            })
+        else:
+            login(request, user)
+            return redirect('/')
+
+    return render(request, 'task/sing_in.html', {
+        'form': AuthenticationForm
+    })
+
+
+def singout(request):
+    logout(request)
+    return redirect('/')
+
+
 # Create your views here.
 def list_task(request):
     tasks = Task.objects.all()
     return render(request, 'task/list_task.html', {'tasks': tasks})
+
 
 def create_task(request):
     print(request.POST)
@@ -48,9 +77,11 @@ def create_task(request):
     task.save()
     return redirect('/')
 
+
 def update_page(request, task_id):
     task = Task.objects.get(id=task_id)
     return render(request, 'task/update_task.html', {'task': task})
+
 
 def update_task(request, task_id):
     task = Task.objects.get(id=task_id)
@@ -60,6 +91,7 @@ def update_task(request, task_id):
     task.save()
 
     return redirect('/')
+
 
 def delete_task(request, task_id):
     task = Task.objects.get(id=task_id)
