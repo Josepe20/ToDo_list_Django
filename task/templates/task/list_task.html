@@ -4,41 +4,34 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 offset-md-4">
-                <h1 class="display-3 text-center fw-bold">Tasks</h1>
+                <h1 class="display-3 text-center fw-bold">{{ user_name }}'s Tasks</h1>
 
-                <form action="{% url 'create_task' %}" method="POST" class="card card-body bg-secondary">
-                    {% csrf_token %}
-
-                    <label for="title">Title:</label>
-                    <input type="text" name="title" placeholder="Write a title" class="form-control mb-2" required>
-
-                    <label for="description">Description:</label>
-                    <textarea name="description" row="3" placeholder="Write a description" class="form-control mb-2" required></textarea>
-
-                    <button class="btn btn-success">Save</button>
-                </form>
+                <a href="{% url 'create_task' %}">Create Task</a>
 
                 <div>
                     {% for task in tasks %}
                         <div class="card card-body text-black mt-2 d-flex flex-row justify-content-between">
                             <div>
-                                <h4>{{ task.title }}</h4>
+                                {% if task.important %}
+                                    <h4>{{ task.title }} ⭐</h4>
+                                {% else %}
+                                    <h4>{{ task.title }}</h4>
+                                {% endif %}
+
+
                                 <p>{{ task.description }}</p>
+
                             </div>
+
                             <div>
-                                <form action="{% url 'update_page' task.id %}" method="POST">
-                                    {% csrf_token %}
-                                    <button class="btn btn-primary mt-1">Update</button>
-                                </form>
+                                <a href=""><button class="btn btn-warning mt-1">Completed</button></a>
 
-                                <form action="{% url 'delete_task' task.id %}" method="POST">
-                                    {% csrf_token %}
-                                    <button class="btn btn-danger mt-1">Delete</button>
-                                </form>
+                                <a href="{% url 'update_task' task.id %}"><button class="btn btn-primary mt-1">Update</button></a>
+
+                                <a href="{% url 'delete_task' task.id %}"><button class="btn btn-danger mt-1">Delete</button></a>
+
                             </div>
-
                         </div>
-
                     {% empty %}
                         <h2 class="display-5 text-center">No tasks yet</h2>
                     {% endfor %}

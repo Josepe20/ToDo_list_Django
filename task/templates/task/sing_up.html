@@ -8,7 +8,7 @@
     <form action="{% url 'singup' %}" method="POST">
         {% csrf_token %}
 
-        {{form.as_p}}
+        {{form}}
 
         <button>
             Sing Up

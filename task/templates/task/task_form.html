@@ -1,0 +1,76 @@
+{% extends 'task/base.html' %}
+
+{% block content %}
+
+    {% if operation == 'create' %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 offset-md-4">
+
+                    <h1 class="display-3 text-center fw-bold">Create Task</h1>
+
+                    <form action="{% url 'create_task' %}" method="POST" class="card card-body bg-secondary">
+                        {% csrf_token %}
+
+                        {{form}}
+
+                        <button class="btn btn-success">Save</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    {% elif operation == 'update' %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 offset-md-4">
+                    <h1 class="display-3 text-center fw-bold">{{ task.title }}</h1>
+
+                    <form action="{% url 'update_task' task.id %}" method="POST" class="card card-body bg-secondary">
+                        {% csrf_token %}
+
+                        {{form}}
+
+                        <button class="btn btn-success">Edit</button>
+                    </form>
+
+                    <div>
+                        <div class="card card-body text-black mt-2 d-flex flex-row justify-content-between">
+                            <div>
+                                <h4>{{ task.title }}</h4>
+                                <p>{{ task.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% elif operation == 'delete' %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 offset-md-4">
+                    <h1 class="display-3 text-center fw-bold">{{ task.title }}</h1>
+
+                    <form action="{% url 'update_task' task.id %}" method="POST" class="card card-body bg-secondary">
+                        {% csrf_token %}
+                        <button class="btn btn-success">Delete</button>
+                    </form>
+
+                    <div>
+                        <div class="card card-body text-black mt-2 d-flex flex-row justify-content-between">
+                            <div>
+                                <h4>{{ task.title }}</h4>
+                                <p>{{ task.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endblock %}
+

@@ -5,6 +5,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from django.http import HttpResponse
 from .models import Task
+from .forms import TaskForm
 
 
 # singup users
@@ -23,9 +24,9 @@ def singup(request):
                 return redirect('/')
 
             except IntegrityError:
-                return render(request, 'task/sing_up.html', {
-                    'form': UserCreationForm,
-                    'error': 'Username already exist',
+                return render(request, 'task/sing_in.html', {
+                    'form': AuthenticationForm,
+                    'error': 'User already exist, log in instead of sing up'
                 })
         else:
             return render(request, 'task/sing_up.html', {
@@ -67,33 +68,60 @@ def singout(request):
 
 # Create your views here.
 def list_task(request):
-    tasks = Task.objects.all()
-    return render(request, 'task/list_task.html', {'tasks': tasks})
+    tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
+    user = request.user
+    return render(request, 'task/list_task.html', {
+        'tasks': tasks,
+        'user_name': user,
+    })
 
 
 def create_task(request):
-    print(request.POST)
-    task = Task(title=request.POST['title'], description=request.POST['description'])
-    task.save()
-    return redirect('/')
+    if request.method == 'POST':
+        try:
+            form = TaskForm(request.POST)
+            new_task = form.save(commit=False)
+            new_task.user = request.user
+            new_task.save()
+            return redirect('/')
 
+        except ValueError:
+            return render(request, 'task/task_form.html', {
+                'form': TaskForm,
+                'error': 'Please provide valid data'
+            })
 
-def update_page(request, task_id):
-    task = Task.objects.get(id=task_id)
-    return render(request, 'task/update_task.html', {'task': task})
+    return render(request, 'task/task_form.html', {
+        'form': TaskForm,
+        'operation': 'create',
+    })
 
 
 def update_task(request, task_id):
     task = Task.objects.get(id=task_id)
 
-    task.title = request.POST['title']
-    task.description = request.POST['description']
-    task.save()
+    if request.method == 'POST':
+        task.title = request.POST['title']
+        task.description = request.POST['description']
+        task.save()
 
-    return redirect('/')
+        return redirect('/')
 
+    return render(request, 'task/task_form.html', {
+        'task': task,
+        'form': TaskForm,
+        'operation': 'update'
+    })
 
 def delete_task(request, task_id):
     task = Task.objects.get(id=task_id)
-    task.delete()
-    return redirect('/')
+
+    if request.method == 'POST':
+        task.delete()
+        return redirect('/')
+
+    return render(request, 'task/task_form.html', {
+        'task': task,
+        'form': TaskForm,
+        'operation': 'delete'
+    })

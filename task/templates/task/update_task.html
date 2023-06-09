@@ -9,11 +9,7 @@
                 <form action="{% url 'update_task' task.id %}" method="POST" class="card card-body bg-secondary">
                     {% csrf_token %}
 
-                    <label for="title">Title:</label>
-                    <input type="text" name="title" value="{{ task.title }}" placeholder="Edit title" class="form-control mb-2" required>
-
-                    <label for="description">Description:</label>
-                    <textarea name="description" row="3" placeholder="Edit description" value="{{ task.description }}" class="form-control mb-2" required></textarea>
+                    {{form}}
 
                     <button class="btn btn-success">Edit</button>
                 </form>
