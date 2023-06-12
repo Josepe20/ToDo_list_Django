@@ -4,11 +4,24 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 offset-md-4">
-                <h1 class="display-3 text-center fw-bold">{{ user_name }}'s Tasks</h1>
+                {% if user_name %}
+                    <h1 class="display-3 text-center fw-bold">{{ user_name }}'s Tasks</h1>
+                {% else %}
+                    <h1 class="display-3 text-center fw-bold">Tasks</h1>
+                {% endif %}
 
-                <a href="{% url 'create_task' %}">Create Task</a>
 
                 <div>
+                    <a href="{% url 'create_task' %}" class="display-3 text-center fw-bold"><button class="btn btn-success mt-1">+ Create Task</button></a>
+
+
+                    {% if completed %}
+                        <a href="{% url 'tasks_uncompleted' %}" class="display-3 text-center fw-bold"><button class="btn btn-info mt-1">Tasks Uncompleted</button></a>
+                    {% else %}
+                        <a href="{% url 'tasks_completed' %}" class="display-3 text-center fw-bold"><button class="btn btn-info mt-1">Tasks Completed</button></a>
+                    {% endif %}
+
+
                     {% for task in tasks %}
                         <div class="card card-body text-black mt-2 d-flex flex-row justify-content-between">
                             <div>
@@ -21,15 +34,18 @@
 
                                 <p>{{ task.description }}</p>
 
+                                {% if task.datecompleted %}
+                                    <p>{{ task.datecompleted }}</p>
+                                {% endif %}
+
                             </div>
 
                             <div>
-                                <a href=""><button class="btn btn-warning mt-1">Completed</button></a>
+                                <a href="{% url 'complete_task' task.id %}"><button class="btn btn-warning mt-1">Complete</button></a>
 
                                 <a href="{% url 'update_task' task.id %}"><button class="btn btn-primary mt-1">Update</button></a>
 
                                 <a href="{% url 'delete_task' task.id %}"><button class="btn btn-danger mt-1">Delete</button></a>
-
                             </div>
                         </div>
                     {% empty %}
