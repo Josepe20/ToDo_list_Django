@@ -1,0 +1,38 @@
+{% extends 'task/base.html' %}
+
+{% block content %}
+
+<main class="container py-5">
+    <section class="card card-body bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 offset-md-4">
+
+                    <h1 class="display-3 text-center fw-bold">To-Do List</h1>
+                    <br>
+                    <p>This is a backend exercise developed with Django, The project features are:</p>
+                    <ul>
+                        <li>Web Responsive</li>
+                        <li>Database CRUD</li>
+                        <li>Authorization & Authentication</li>
+                        <li>Register & Log in users</li>
+                        <li>Relational Tables</li>
+                    </ul>
+                    <br>
+                    <p>Because this is a backend exercise, It is not focus on frontend. But I will be uploading it using React.js</p>
+
+                    <div class="text-center">
+                        {% if not user.is_authenticated %}
+                            <a class="btn btn-light" href="/singup">Sing Up</a>
+                            <a class="btn btn-light" href="/login">Log In</a>
+                        {% else %}
+                            <a class="btn btn-light" href="{% url 'logout' %}">Log Out</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock %}

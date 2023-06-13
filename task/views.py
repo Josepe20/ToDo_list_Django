@@ -7,9 +7,11 @@ from django.utils import timezone
 from django.http import HttpResponse
 from .models import Task
 from .forms import TaskForm
+from django.contrib.auth.decorators import login_required
 
 
 # singup users
+
 def singup(request):
 
     if request.method == 'POST':
@@ -22,7 +24,7 @@ def singup(request):
                 user.save()
 
                 login(request, user)
-                return redirect('/')
+                return redirect('/tasks')
 
             except IntegrityError:
                 return render(request, 'task/sing_in.html', {
@@ -55,13 +57,13 @@ def singin(request):
             })
         else:
             login(request, user)
-            return redirect('/')
+            return redirect('/tasks')
 
     return render(request, 'task/sing_in.html', {
         'form': AuthenticationForm
     })
 
-
+@login_required
 def singout(request):
     logout(request)
     return redirect('/')
@@ -69,8 +71,10 @@ def singout(request):
 
 # Create your views here.
 def home(request):
-    return render(request, 'task/list_task.html')
+    return render(request, 'task/home.html')
 
+
+@login_required
 def list_task(request):
     tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
     user = request.user
@@ -80,6 +84,7 @@ def list_task(request):
         'completed': False,
     })
 
+@login_required
 def list_task_completed(request):
     tasks = Task.objects.filter(user=request.user, datecompleted__isnull=False)
     user = request.user
@@ -90,6 +95,7 @@ def list_task_completed(request):
     })
 
 
+@login_required
 def create_task(request):
     if request.method == 'POST':
         try:
@@ -97,7 +103,7 @@ def create_task(request):
             new_task = form.save(commit=False)
             new_task.user = request.user
             new_task.save()
-            return redirect('/')
+            return redirect('/tasks')
 
         except ValueError:
             return render(request, 'task/task_form.html', {
@@ -111,6 +117,7 @@ def create_task(request):
     })
 
 
+@login_required
 def update_task(request, task_id):
 
     task = get_object_or_404(Task, pk=task_id, user=request.user)
@@ -120,7 +127,7 @@ def update_task(request, task_id):
         try:
             form = TaskForm(request.POST, instance=task)
             form.save()
-            return redirect('/')
+            return redirect('/tasks')
 
         except ValueError:
             return render(request, 'task/task_form.html', {
@@ -136,25 +143,29 @@ def update_task(request, task_id):
         'operation': 'update'
     })
 
+
+@login_required
 def complete_task(request, task_id):
     task = get_object_or_404(Task, pk=task_id, user=request.user)
 
     if request.method == "POST":
         task.datecompleted = timezone.now()
         task.save()
-        return redirect('/')
+        return redirect('/tasks')
 
     return render(request, 'task/task_form.html', {
         'task': task,
         'operation': 'complete',
     })
 
+
+@login_required
 def delete_task(request, task_id):
     task = get_object_or_404(Task, pk=task_id, user=request.user)
 
     if request.method == 'POST':
         task.delete()
-        return redirect('/')
+        return redirect('/tasks')
 
     return render(request, 'task/task_form.html', {
         'task': task,

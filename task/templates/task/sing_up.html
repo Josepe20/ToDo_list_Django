@@ -1,17 +1,41 @@
 {% extends 'task/base.html' %}
 
 {% block content %}
-    <h1>Sing Up</h1>
 
-    <span>{{ error }}</span>
+    <main class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4 mt-5">
+                <form action="{% url 'singup' %}" method="POST" class="card card-body bg-secondary">
+                    <h1 class=" text-center">Sing Up</h1>
 
-    <form action="{% url 'singup' %}" method="POST">
-        {% csrf_token %}
+                    <span>{{ error }}</span>
 
-        {{form}}
+                    {% csrf_token %}
 
-        <button>
-            Sing Up
-        </button>
-    </form>
+                    <div class="mb-3">
+                        <label for="username">Username:</label>
+                        <input type="text" name="username" id="username" class="form-control"
+                        placeholder="write your username">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password1">Password:</label>
+                        <input type="password" name="password1" id="password1" class="form-control"
+                        placeholder="write your password">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password2">Confirm your Password:</label>
+                        <input type="password" name="password2" id="password2" class="form-control"
+                        placeholder="confirm your password">
+                    </div>
+
+                    <button class="btn btn-primary">
+                        Sing Up
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
 {% endblock %}

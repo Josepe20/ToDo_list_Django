@@ -3,7 +3,7 @@ from .views import list_task, create_task, delete_task, update_task, singup, sin
 
 urlpatterns = [
     path('', home),
-    path('task_list/', list_task, name='tasks_uncompleted'),
+    path('tasks/', list_task, name='tasks_uncompleted'),
     path('tasks_completed/', list_task_completed, name='tasks_completed'),
     path('singup/', singup, name='singup'),
     path('logout/', singout, name='logout'),
